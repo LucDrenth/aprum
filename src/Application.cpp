@@ -62,7 +62,10 @@ int main()
     if (glewInit() != GLEW_OK)
     {
         log.error("glew error");
+        return -1;
     }
+
+    glfwSwapInterval(1); // does this actually do anything?
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
@@ -83,7 +86,7 @@ int main()
     GLCall(glGenVertexArrays(1, &VAO));
     GLCall(glBindVertexArray(VAO));
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, VBO));
-    GLCall(glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), positions, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW));
 
     GLCall(glEnableVertexAttribArray(0));
     GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr));
@@ -103,13 +106,28 @@ int main()
     GLCall(glValidateProgram(program));
     GLCall(glUseProgram(program));
 
+    int uColorLocation = glGetUniformLocation(program, "u_Color");
+    if (uColorLocation == -1)
+    {
+        log.warn("shader uniform u_Color was not found");
+    }
+
+    float red = 0.85f;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-        /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
+        // render
+        glUniform4f(uColorLocation, red, 0.2f, 0.35f, 1.0f);
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+
+        // update
+        red += 0.05f;
+        if (red > 1.0f) {
+            red = 0;
+        }
 
         /* Swap front and back buffers */
         GLCall(glfwSwapBuffers(window));
