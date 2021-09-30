@@ -1,34 +1,14 @@
 //
 // Created by Luc Drenth on 24/09/2021.
 //
-#include "logger/Logger.h"
-#include "shader/Shader.h"
+#include "engine/logger/Logger.h"
+#include "engine/graphics/shader/Shader.h"
+#include "engine/graphics/renderer/Renderer.h"
 
 #define GL_SILENCE_DEPRECATION
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-
-#define GLCall(x)\
-GLClearError();  \
-x;               \
-GLLogError(#x, __FILE__, __LINE__);
-
-static void GLClearError()
-{
-    while (glGetError() != GL_NO_ERROR)
-    {
-    }
-}
-
-static void GLLogError(const char* function, const char* file, int line)
-{
-    while (GLenum errorCode = glGetError())
-    {
-        std::cout << "[OpenGL Error]: " << gluErrorString(errorCode) << " - " << file << ":" << line << " - " <<
-        function << std::endl;
-    }
-}
 
 int main()
 {
