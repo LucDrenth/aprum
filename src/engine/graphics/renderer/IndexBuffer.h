@@ -11,9 +11,10 @@ private:
     unsigned int count_;
 
 public:
-    IndexBuffer(const unsigned int* data, unsigned int count);
+    IndexBuffer();
     ~IndexBuffer();
 
+    void init(const unsigned int* data, unsigned int count);
     void bind() const;
     static void unbind();
 

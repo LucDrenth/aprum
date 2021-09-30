@@ -17,10 +17,10 @@ Game::Game()
 void Game::init()
 {
     float positions[] = {
-            -0.5f, -0.5f, // 0
-            0.5f, -0.5f, // 1
-            0.5f,  0.5f, // 2
-            -0.5f,  0.5f, // 3
+            -0.5f, -0.5f, // 0 (bottom left)
+             0.5f, -0.5f, // 1 (bottom right)
+             0.5f,  0.5f, // 2 (top right)
+            -0.5f,  0.5f, // 3 (top left)
     };
 
     unsigned int indices[] = {
@@ -32,14 +32,12 @@ void Game::init()
     GLCall(glGenVertexArrays(1, &vao));
     GLCall(glBindVertexArray(vao));
 
-    // TODO this should probably not be static
-    static VertexBuffer vertexBuffer = VertexBuffer(positions, 4 * 2 * sizeof(float));
+    vertexBuffer_.init(positions, 4 * 2 * sizeof(float));
 
     GLCall(glEnableVertexAttribArray(0));
     GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr));
 
-    // TODO this should probably not be static
-    static IndexBuffer indexBuffer = IndexBuffer(indices, 6);
+    indexBuffer_.init(indices, 6);
 
     Shader basicVertexShader(GL_VERTEX_SHADER, "../res/shaders/Basic.vert");
     Shader basicFragmentShader(GL_FRAGMENT_SHADER, "../res/shaders/Basic.frag");
@@ -54,8 +52,7 @@ void Game::init()
     uColorLocation_ = glGetUniformLocation(program_, "u_Color");
     if (uColorLocation_ == -1)
     {
-        // TODO
-        // log.warn("shader uniform u_Color was not found");
+        std::cout << "shader uniform uColorLocation_ was not found" << std::endl;
     }
 
     red_ = 0.85f;

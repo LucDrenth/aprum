@@ -10,9 +10,10 @@ private:
     unsigned int rendererId_;
 
 public:
-    VertexBuffer(const void* data, unsigned int size);
+    VertexBuffer();
     ~VertexBuffer();
 
+    void init(const void* data, unsigned int size);
     void bind() const;
     static void unbind();
 

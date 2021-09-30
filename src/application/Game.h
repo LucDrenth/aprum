@@ -4,11 +4,16 @@
 
 #pragma once
 
+#include "engine/graphics/renderer/VertexBuffer.h"
+#include "engine/graphics/renderer/IndexBuffer.h"
 #include "engine/IGame.h"
 
 class Game : public IGame
 {
 private:
+    VertexBuffer vertexBuffer_;
+    IndexBuffer indexBuffer_;
+
     unsigned int program_;
     int uColorLocation_;
     float red_;

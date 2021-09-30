@@ -7,12 +7,16 @@
 
 #include <iostream>
 
-VertexBuffer::VertexBuffer(const void *data, unsigned int size)
+VertexBuffer::VertexBuffer()
+{
+}
+
+void VertexBuffer::init(const void *data, unsigned int size)
 {
     GLCall(glGenBuffers(1, &rendererId_));
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, rendererId_));
     GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
-}
+};
 
 VertexBuffer::~VertexBuffer()
 {
