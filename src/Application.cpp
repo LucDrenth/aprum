@@ -81,11 +81,13 @@ int main()
             2, 3, 0
     };
 
-    unsigned int VBO, VAO;
-    GLCall(glGenBuffers(1, &VBO));
-    GLCall(glGenVertexArrays(1, &VAO));
-    GLCall(glBindVertexArray(VAO));
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, VBO));
+    unsigned int vao;
+    GLCall(glGenVertexArrays(1, &vao));
+    GLCall(glBindVertexArray(vao));
+
+    unsigned int vbo;
+    GLCall(glGenBuffers(1, &vbo));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, vbo));
     GLCall(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW));
 
     GLCall(glEnableVertexAttribArray(0));
