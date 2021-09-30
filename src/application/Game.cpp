@@ -12,10 +12,14 @@
 
 Game::Game()
 {
+}
+
+void Game::init()
+{
     float positions[] = {
             -0.5f, -0.5f, // 0
-             0.5f, -0.5f, // 1
-             0.5f,  0.5f, // 2
+            0.5f, -0.5f, // 1
+            0.5f,  0.5f, // 2
             -0.5f,  0.5f, // 3
     };
 
@@ -51,7 +55,7 @@ Game::Game()
     if (uColorLocation_ == -1)
     {
         // TODO
-//        log.warn("shader uniform u_Color was not found");
+        // log.warn("shader uniform u_Color was not found");
     }
 
     red_ = 0.85f;
@@ -70,7 +74,7 @@ void Game::update()
     }
 }
 
-void Game::destroy() const
+void Game::destroy()
 {
     GLCall(glDeleteProgram(program_));
 }

@@ -4,7 +4,9 @@
 
 #pragma once
 
-class Game
+#include "engine/IGame.h"
+
+class Game : public IGame
 {
 private:
     unsigned int program_;
@@ -13,6 +15,7 @@ private:
 
 public:
     Game();
-    void update();
-    void destroy() const;
+    void init() override;
+    void update() override;
+    void destroy() override;
 };

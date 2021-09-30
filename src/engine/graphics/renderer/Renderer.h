@@ -3,6 +3,7 @@
 //
 
 #pragma once
+
 #include <GL/Glew.h>
 
 #define GLCall(x)\
