@@ -8,6 +8,7 @@
 #include "engine/graphics/renderer/IndexBuffer.h"
 #include "engine/graphics/renderer/VertexArray.h"
 #include "engine/IGame.h"
+#include "engine/graphics/shader/ShaderProgram.h"
 
 class Game : public IGame
 {
@@ -15,9 +16,8 @@ private:
     VertexArray vertexArray_;
     VertexBuffer vertexBuffer_;
     IndexBuffer indexBuffer_;
+    ShaderProgram shaderProgram_;
 
-    unsigned int program_;
-    int uColorLocation_;
     float red_;
 
 public:

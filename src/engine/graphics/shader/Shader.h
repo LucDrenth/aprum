@@ -8,10 +8,10 @@
 class Shader
 {
 private:
-    unsigned int id_;
+    unsigned int rendererId_;
 
 public:
-    Shader(unsigned int type, std::string path);
+    Shader(unsigned int type, std::string& path);
 
 private:
     unsigned int compile(unsigned int type, std::string& source);
@@ -19,5 +19,5 @@ private:
     static std::string parse(std::string &path);
 
 public:
-    unsigned int getId() const;
+    unsigned int getRendererId() const;
 };

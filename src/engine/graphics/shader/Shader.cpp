@@ -3,26 +3,27 @@
 //
 
 #include "Shader.h"
+#include "engine/graphics/renderer/Renderer.h"
 
 #include <GL/glew.h>
 #include <fstream>
 #include <sstream>
 
-Shader::Shader(unsigned int type, std::string path)
+Shader::Shader(unsigned int type, std::string& path)
 {
     std::string source = parse(path);
-    id_ = compile(type, source);
+    rendererId_ = compile(type, source);
 }
 
 unsigned int Shader::compile(unsigned int type, std::string &source)
 {
     unsigned int id = glCreateShader(type);
     const char* src = source.c_str();
-    glShaderSource(id, 1, &src, nullptr);
-    glCompileShader(id);
+    GLCall(glShaderSource(id, 1, &src, nullptr));
+    GLCall(glCompileShader(id));
 
     int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    GLCall(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
 
     if (result == GL_TRUE)
     {
@@ -35,14 +36,14 @@ unsigned int Shader::compile(unsigned int type, std::string &source)
 unsigned int Shader::handleCompileError(unsigned int type, std::string &source, unsigned int id) const
 {
     int length;
-    glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+    GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
     char message[length];
-    glGetShaderInfoLog(id, length, &length, message);
+    GLCall(glGetShaderInfoLog(id, length, &length, message));
 
     const std::string shaderTypeAsString = type == GL_VERTEX_SHADER ? "vertex" : "fragment";
     std::cout << "failed to compile " << shaderTypeAsString << " shader" << std::endl;
     std::cout << message << std::endl;
-    glDeleteShader(id_);
+    GLCall(glDeleteShader(rendererId_));
 
     return -1;
 }
@@ -66,7 +67,7 @@ std::string Shader::parse(std::string &path)
     return result.str();
 }
 
-unsigned int Shader::getId() const
+unsigned int Shader::getRendererId() const
 {
-    return id_;
+    return rendererId_;
 }
