@@ -26,7 +26,7 @@ void Game::init()
 
     vertexBuffer_.init(positions, 4 * 2 * sizeof(float));
     VertexBufferLayout layout;
-    layout.push<float>(2);
+    layout.push(GL_FLOAT, 2);
     vertexArray_.init();
     vertexArray_.addBuffer(vertexBuffer_, layout);
     indexBuffer_.init(indices, 6);

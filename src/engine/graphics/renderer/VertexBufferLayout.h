@@ -37,31 +37,10 @@ private:
 public:
     VertexBufferLayout();
 
-    template<typename T>
-    void push(unsigned int count)
+    void push(GLuint type, unsigned int count)
     {
-        std::cout << "ERROR: This should not have been called called this" << std::endl;
-    }
-
-    template<>
-    void push<float>(unsigned int count)
-    {
-        elements_.push_back({GL_FLOAT, count, GL_FALSE});
-        stride_ += count * VertexBufferElement::getSizeOfType(GL_FLOAT);
-    }
-
-    template<>
-    void push<unsigned int>(unsigned int count)
-    {
-        elements_.push_back({GL_UNSIGNED_INT, count, GL_FALSE});
-        stride_ += count * VertexBufferElement::getSizeOfType(GL_UNSIGNED_INT);
-    }
-
-    template<>
-    void push<unsigned char>(unsigned int count)
-    {
-        elements_.push_back({GL_UNSIGNED_BYTE, count, GL_TRUE});
-        stride_ += count * VertexBufferElement::getSizeOfType(GL_UNSIGNED_BYTE);
+        elements_.push_back({type, count, GL_FALSE});
+        stride_ += count * VertexBufferElement::getSizeOfType(type);
     }
 
     inline const std::vector<VertexBufferElement>& getElements() const
