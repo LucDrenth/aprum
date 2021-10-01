@@ -6,6 +6,7 @@
 #include "engine/graphics/renderer/Renderer.h"
 #include "engine/graphics/renderer/VertexBuffer.h"
 #include "engine/graphics/renderer/IndexBuffer.h"
+#include "engine/graphics/renderer/VertexArray.h"
 #include "engine/graphics/shader/Shader.h"
 
 #include <GL/glew.h>
@@ -34,14 +35,18 @@ void Game::init()
 
     vertexBuffer_.init(positions, 4 * 2 * sizeof(float));
 
-    GLCall(glEnableVertexAttribArray(0));
-    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr));
+    VertexBufferLayout layout;
+    layout.push<float>(2);
+
+    vertexArray_.init();
+    vertexArray_.addBuffer(vertexBuffer_, layout);
 
     indexBuffer_.init(indices, 6);
 
     Shader basicVertexShader(GL_VERTEX_SHADER, "../res/shaders/Basic.vert");
     Shader basicFragmentShader(GL_FRAGMENT_SHADER, "../res/shaders/Basic.frag");
 
+    vertexArray_.unbind();
     GLCall(program_ = glCreateProgram());
     GLCall(glAttachShader(program_, basicVertexShader.getId()));
     GLCall(glAttachShader(program_, basicFragmentShader.getId()));
@@ -52,7 +57,7 @@ void Game::init()
     uColorLocation_ = glGetUniformLocation(program_, "u_Color");
     if (uColorLocation_ == -1)
     {
-        std::cout << "shader uniform uColorLocation_ was not found" << std::endl;
+        std::cout << "WARNING: shader uniform uColorLocation_ was not found" << std::endl;
     }
 
     red_ = 0.85f;
@@ -62,6 +67,9 @@ void Game::update()
 {
     // render
     glUniform4f(uColorLocation_, red_, 0.2f, 0.35f, 1.0f);
+
+    vertexArray_.bind();
+    indexBuffer_.bind();
     GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
     // update

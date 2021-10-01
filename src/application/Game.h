@@ -6,11 +6,13 @@
 
 #include "engine/graphics/renderer/VertexBuffer.h"
 #include "engine/graphics/renderer/IndexBuffer.h"
+#include "engine/graphics/renderer/VertexArray.h"
 #include "engine/IGame.h"
 
 class Game : public IGame
 {
 private:
+    VertexArray vertexArray_;
     VertexBuffer vertexBuffer_;
     IndexBuffer indexBuffer_;
 
