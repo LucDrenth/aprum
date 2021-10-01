@@ -1,10 +1,12 @@
 #version 330 core
 
-layout(location = 0) out vec4 color;
+out vec4 outputColor;
+
+in vec3 color;
 
 uniform vec4 u_Color;
 
 void main()
 {
-   color = u_Color;
+   outputColor = vec4(u_Color.x, color.y, color.z, 1.0f);
 }

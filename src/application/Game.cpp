@@ -13,10 +13,10 @@ Game::Game()
 void Game::init()
 {
     float positions[] = {
-            -0.5f, -0.5f, // 0 (bottom left)
-             0.5f, -0.5f, // 1 (bottom right)
-             0.5f,  0.5f, // 2 (top right)
-            -0.5f,  0.5f, // 3 (top left)
+            -0.5f, -0.5f, 0.15f, 0.7f,  0.75f, // 0 (bottom left)
+             0.5f, -0.5f, 0.8f,  0.15f, 0.16f, // 1 (bottom right)
+             0.5f,  0.5f, 0.15f, 0.85f, 0.05f, // 2 (top right)
+            -0.5f,  0.5f, 0.45f, 0.25f, 0.9f,  // 3 (top left)
     };
 
     unsigned int indices[] = {
@@ -24,9 +24,10 @@ void Game::init()
             2, 3, 0
     };
 
-    vertexBuffer_.init(positions, 4 * 2 * sizeof(float));
+    vertexBuffer_.init(positions, sizeof(positions));
     VertexBufferLayout layout;
     layout.push(GL_FLOAT, 2);
+    layout.push(GL_FLOAT, 3);
     vertexArray_.init();
     vertexArray_.addBuffer(vertexBuffer_, layout);
     indexBuffer_.init(indices, 6);
@@ -34,7 +35,8 @@ void Game::init()
     shaderProgram_.init("../res/shaders/Basic.vert", "../res/shaders/Basic.frag");
     shaderProgram_.use();
 
-    red_ = 0.85f;
+    red_ = 0.01f;
+    redDirection_ = 1.0f;
 }
 
 void Game::update()
@@ -44,10 +46,11 @@ void Game::update()
     Renderer::draw(vertexArray_, indexBuffer_, shaderProgram_);
 
     // update
-    red_ += 0.01f;
-    if (red_ > 1.0f) {
-        red_ = 0;
-    }
+    red_ += 0.01f * redDirection_;
+    if (red_ >= 1.0f) {
+        redDirection_ = -1.0f;
+    } else if(red_ <= 0)
+        redDirection_ = 1.0f;
 }
 
 void Game::destroy()

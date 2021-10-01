@@ -19,6 +19,7 @@ private:
     ShaderProgram shaderProgram_;
 
     float red_;
+    float redDirection_;
 
 public:
     Game();
