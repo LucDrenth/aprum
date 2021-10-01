@@ -31,8 +31,6 @@ void Game::init()
     vertexArray_.addBuffer(vertexBuffer_, layout);
     indexBuffer_.init(indices, 6);
 
-    vertexArray_.unbind();
-
     shaderProgram_.init("../res/shaders/Basic.vert", "../res/shaders/Basic.frag");
     shaderProgram_.use();
 
@@ -43,10 +41,7 @@ void Game::update()
 {
     // render
     shaderProgram_.setUniform4f("u_Color", red_, 0.2f, 0.35f, 1.0f);
-
-    vertexArray_.bind();
-    indexBuffer_.bind();
-    GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+    Renderer::draw(vertexArray_, indexBuffer_, shaderProgram_);
 
     // update
     red_ += 0.01f;
