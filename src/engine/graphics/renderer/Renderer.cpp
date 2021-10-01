@@ -3,23 +3,7 @@
 //
 
 #include "Renderer.h"
-#include <iostream>
-
-void GLClearError()
-{
-    while (glGetError() != GL_NO_ERROR)
-    {
-    }
-}
-
-void GLLogError(const char* function, const char* file, int line)
-{
-    while (GLenum errorCode = glGetError())
-    {
-        std::cout << "[OpenGL Error]: " << gluErrorString(errorCode) << " - " << file << ":" << line << " - " <<
-                  function << std::endl;
-    }
-}
+#include "engine/logger/GLErrorHandler.h"
 
 void Renderer::draw(const VertexArray& vertexArray, const IndexBuffer& indexBuffer, const ShaderProgram& shaderProgram)
 {

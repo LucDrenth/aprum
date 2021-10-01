@@ -3,7 +3,7 @@
 //
 
 #include "ShaderProgram.h"
-#include "engine/graphics/renderer/Renderer.h"
+#include "engine/logger/GLErrorHandler.h"
 #include "Shader.h"
 #include <GL/glew.h>
 

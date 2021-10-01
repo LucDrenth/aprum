@@ -10,14 +10,6 @@
 
 #include <GL/Glew.h>
 
-#define GLCall(x)\
-GLClearError();  \
-x;               \
-GLLogError(#x, __FILE__, __LINE__);
-
-void GLClearError();
-void GLLogError(const char* function, const char* file, int line);
-
 class Renderer
 {
 public:

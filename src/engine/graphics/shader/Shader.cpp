@@ -3,7 +3,7 @@
 //
 
 #include "Shader.h"
-#include "engine/graphics/renderer/Renderer.h"
+#include "engine/logger/GLErrorHandler.h"
 
 #include <GL/glew.h>
 #include <fstream>

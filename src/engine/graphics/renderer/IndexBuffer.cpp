@@ -3,7 +3,8 @@
 //
 
 #include "IndexBuffer.h"
-#include "Renderer.h"
+#include "engine/logger/GLErrorHandler.h"
+#include <GL/glew.h>
 
 IndexBuffer::IndexBuffer()
 {

@@ -3,7 +3,7 @@
 //
 
 #include "VertexArray.h"
-#include "Renderer.h"
+#include "engine/logger/GLErrorHandler.h"
 
 VertexArray::VertexArray()
 {

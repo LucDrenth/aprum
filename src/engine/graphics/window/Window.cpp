@@ -2,9 +2,10 @@
 // Created by Luc Drenth on 30/09/2021.
 //
 
-#include "engine/graphics/renderer/Renderer.h"
+#include <GL/glew.h>
+#include "engine/logger/GLErrorHandler.h"
 #include "Window.h"
-#include "GLFW/glfw3.h"
+#include <GLFW/glfw3.h>
 
 #include <iostream>
 
