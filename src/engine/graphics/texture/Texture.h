@@ -15,12 +15,13 @@ private:
     int width_;
     int height_;
     int bitsPerPixel_;
+    bool hasError_;
 
 public:
     Texture();
     ~Texture();
 
     void init (const std::string& filePath);
-    void bind (unsigned int slot = 0);
-    void unbind();
+    void bind (unsigned int slot = 0) const;
+    static void unbind();
 };
