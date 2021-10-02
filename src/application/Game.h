@@ -9,6 +9,7 @@
 #include "engine/graphics/renderer/VertexArray.h"
 #include "engine/IGame.h"
 #include "engine/graphics/shader/ShaderProgram.h"
+#include "engine/graphics/texture/Texture.h"
 
 class Game : public IGame
 {
@@ -17,6 +18,7 @@ private:
     VertexBuffer vertexBuffer_;
     IndexBuffer indexBuffer_;
     ShaderProgram shaderProgram_;
+    Texture texture_;
 
     float red_;
     float redDirection_;
