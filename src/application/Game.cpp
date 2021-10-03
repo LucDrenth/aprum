@@ -38,7 +38,10 @@ void Game::init()
     vertexArray_.addBuffer(vertexBuffer_, layout);
     indexBuffer_.init(indices, 6);
 
-    glm::mat4 projectionMatrix = glm::ortho(-4.0f, 4.0f, -3.0f, 3.0f, -1.0f, 1.0f);
+    glm::mat4 projectionMatrix = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+    glm::mat4 viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, 0));
+    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.2f, 0.2f, 0));
+    glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
 
     shaderProgram_.init("../res/shaders/Basic.vert", "../res/shaders/Basic.frag");
     shaderProgram_.use();
@@ -47,7 +50,7 @@ void Game::init()
     texture_.bind(0);
 
     shaderProgram_.setUniform1i("u_TextureSlot", 0);
-    shaderProgram_.setUniformMat4f("u_modelViewProjectionMatrix", projectionMatrix);
+    shaderProgram_.setUniformMat4f("u_modelViewProjectionMatrix", mvpMatrix);
 }
 
 void Game::update()
