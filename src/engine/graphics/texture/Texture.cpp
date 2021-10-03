@@ -4,8 +4,7 @@
 
 #include "Texture.h"
 #include "engine/logger/GLErrorHandler.h"
-#include "engine/vendor/stb_image.h"
-
+#include "stb_image/stb_image.h"
 #include <GL/glew.h>
 
 Texture::Texture()

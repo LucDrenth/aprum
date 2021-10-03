@@ -3,6 +3,9 @@
 //
 
 #pragma once
+
+#include "glm/glm.hpp"
+
 #include <iostream>
 #include <unordered_map>
 
@@ -24,6 +27,7 @@ public:
     void setUniform3f(const std::string& name, float f0, float f1, float f2);
     void setUniform4f(const std::string& name, float f0, float f1, float f2, float f3);
     void setUniform1i(const std::string& name, int value);
+    void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
 
 private:
     int getUniformLocation(const std::string& name);

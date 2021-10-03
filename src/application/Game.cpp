@@ -3,10 +3,12 @@
 //
 
 #include "Game.h"
-#include "engine/graphics/renderer/Renderer.h"
-#include "engine/graphics/renderer/VertexArray.h"
-#include "engine/graphics/texture/Texture.h"
-#include "engine/logger/GLErrorHandler.h"
+#include "graphics/renderer/Renderer.h"
+#include "graphics/renderer/VertexArray.h"
+#include "logger/GLErrorHandler.h"
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 Game::Game() : red_(0.01f), redDirection_(1.0f) {}
 
@@ -36,6 +38,8 @@ void Game::init()
     vertexArray_.addBuffer(vertexBuffer_, layout);
     indexBuffer_.init(indices, 6);
 
+    glm::mat4 projectionMatrix = glm::ortho(-4.0f, 4.0f, -3.0f, 3.0f, -1.0f, 1.0f);
+
     shaderProgram_.init("../res/shaders/Basic.vert", "../res/shaders/Basic.frag");
     shaderProgram_.use();
 
@@ -43,6 +47,7 @@ void Game::init()
     texture_.bind(0);
 
     shaderProgram_.setUniform1i("u_TextureSlot", 0);
+    shaderProgram_.setUniformMat4f("u_modelViewProjectionMatrix", projectionMatrix);
 }
 
 void Game::update()

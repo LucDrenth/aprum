@@ -57,7 +57,7 @@ int Window::init()
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     #endif
 
-    window_ = glfwCreateWindow(640, 480, "Hello World", nullptr, nullptr);
+    window_ = glfwCreateWindow(640, 480, "Aprum engine", nullptr, nullptr);
     if (!window_)
     {
         glfwTerminate();
