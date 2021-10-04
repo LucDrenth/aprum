@@ -10,6 +10,7 @@
 #include "engine/IGame.h"
 #include "engine/graphics/shader/ShaderProgram.h"
 #include "engine/graphics/texture/Texture.h"
+#include "imgui.h"
 
 class Game : public IGame
 {
@@ -19,6 +20,10 @@ private:
     IndexBuffer indexBuffer_;
     ShaderProgram shaderProgram_;
     Texture texture_;
+
+    bool showDemoWindow_;
+    bool showAnotherWindow_;
+    ImVec4 clearColor_;
 
     float red_;
     float redDirection_;

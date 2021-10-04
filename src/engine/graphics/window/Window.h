@@ -17,4 +17,7 @@ public:
     Window();
     int init();
     void run(IGame& game);
+
+private:
+    void initImgui();
 };

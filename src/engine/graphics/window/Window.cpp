@@ -5,9 +5,14 @@
 #include <GL/glew.h>
 #include "engine/logger/GLErrorHandler.h"
 #include "Window.h"
+
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 Window::Window()
 {
@@ -29,15 +34,37 @@ void Window::run(IGame& game)
 
     while (!glfwWindowShouldClose(window_))
     {
+        // clear window
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
+        // start imgui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        // update game
         game.update();
 
+        // draw imgui frame
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        // swap buffers
         GLCall(glfwSwapBuffers(window_));
+
+        // poll events
         GLCall(glfwPollEvents());
     }
 
+    // cleanup imgui
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    // clean up game
     game.destroy();
+
+    // cleanup glfw
     glfwTerminate();
 }
 
@@ -74,5 +101,16 @@ int Window::init()
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
+    initImgui();
+
     return 0;
+}
+
+void Window::initImgui()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window_, true);
+    ImGui_ImplOpenGL3_Init((char *)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
 }
