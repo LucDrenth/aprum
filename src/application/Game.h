@@ -27,6 +27,7 @@ private:
 
     float red_;
     float redDirection_;
+    int rotation_;
 
 public:
     Game();

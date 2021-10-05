@@ -35,7 +35,7 @@ void Window::run(IGame& game)
     while (!glfwWindowShouldClose(window_))
     {
         // clear window
-        GLCall(glClear(GL_COLOR_BUFFER_BIT));
+        GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
         // start imgui frame
         ImGui_ImplOpenGL3_NewFrame();
@@ -102,6 +102,8 @@ int Window::init()
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     initImgui();
+
+    GLCall(glEnable(GL_DEPTH_TEST));
 
     return 0;
 }

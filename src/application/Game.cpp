@@ -11,20 +11,26 @@
 
 #include "imgui.h"
 
-Game::Game() : red_(0.01f), redDirection_(1.0f) {}
+Game::Game() : red_(0.01f), redDirection_(1.0f), rotation_(0) {}
 
 void Game::init()
 {
     float positions[] = {
-            -0.5f, -0.5f, 0.15f, 0.7f,  0.75f, 0.0f, 0.0f, // 0 (bottom left)
-             0.5f, -0.5f, 0.8f,  0.15f, 0.16f, 1.0f, 0.0f, // 1 (bottom right)
-             0.5f,  0.5f, 0.15f, 0.85f, 0.05f, 1.0f, 1.0f, // 2 (top right)
-            -0.5f,  0.5f, 0.45f, 0.25f, 0.9f,  0.0f, 1.0f, // 3 (top left)
+            // position             // color
+            -0.5f, 0.0f,  0.5f,     0.5f, 0.0f,  0.0f,
+            -0.5f, 0.0f, -0.5f,     0.0f,  0.5f, 0.0f,
+             0.5f, 0.0f, -0.5f,     0.0f, 0.0f, 0.5f,
+             0.5f, 0.0f,  0.5f,     0.5f, 0.5f, 0.0f,
+             0.0f, 0.8f,  0.0f,     0.0f, 0.5f,  0.5f,
     };
 
     unsigned int indices[] = {
             0, 1, 2,
-            2, 3, 0
+            0, 2, 3,
+            0, 1, 4,
+            1, 2, 4,
+            2, 3, 4,
+            3, 0, 4
     };
 
     GLCall(glEnable(GL_BLEND));
@@ -32,17 +38,19 @@ void Game::init()
 
     vertexBuffer_.init(positions, sizeof(positions));
     VertexBufferLayout layout;
-    layout.push(GL_FLOAT, 2); // position
+    layout.push(GL_FLOAT, 3); // position
     layout.push(GL_FLOAT, 3); // color
-    layout.push(GL_FLOAT, 2); // texture coordinate
     vertexArray_.init();
     vertexArray_.addBuffer(vertexBuffer_, layout);
-    indexBuffer_.init(indices, 6);
+    indexBuffer_.init(indices, sizeof(indices) / sizeof(unsigned int));
 
-    glm::mat4 projectionMatrix = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
-    glm::mat4 viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, 0));
-    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.2f, 0.2f, 0));
-    glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    glm::mat4 viewMatrix = glm::mat4(1.0f);
+    glm::mat4 projectionMatrix = glm::mat4(1.0f);
+
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(60.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, -0.5f, -2.0f));
+    projectionMatrix = glm::perspective(glm::radians(45.0f), (float)(640/480), 0.1f, 100.0f);
 
     shaderProgram_.init("../res/shaders/Basic.vert", "../res/shaders/Basic.frag");
     shaderProgram_.use();
@@ -51,7 +59,9 @@ void Game::init()
     texture_.bind(0);
 
     shaderProgram_.setUniform1i("u_TextureSlot", 0);
-    shaderProgram_.setUniformMat4f("u_modelViewProjectionMatrix", mvpMatrix);
+    shaderProgram_.setUniformMat4f("u_modelMatrix", modelMatrix);
+    shaderProgram_.setUniformMat4f("u_viewMatrix", viewMatrix);
+    shaderProgram_.setUniformMat4f("u_projectionMatrix", projectionMatrix);
 
     // imgui test
     showDemoWindow_ = true;
@@ -61,16 +71,11 @@ void Game::init()
 
 void Game::update()
 {
-    // render
-//    shaderProgram_.setUniform4f("u_Color", red_, 0.2f, 0.35f, 1.0f);
     Renderer::draw(vertexArray_, indexBuffer_, shaderProgram_);
 
-    // update
-    red_ += 0.01f * redDirection_;
-    if (red_ >= 1.0f) {
-        redDirection_ = -1.0f;
-    } else if(red_ <= 0)
-        redDirection_ = 1.0f;
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::rotate(modelMatrix, glm::radians((float)rotation_), glm::vec3(0.0f, 1.0f, 0.0f));
+    shaderProgram_.setUniformMat4f("u_modelMatrix", modelMatrix);
 
     // imgui tests
     {
@@ -78,19 +83,7 @@ void Game::update()
         static int counter = 0;
 
         ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-        ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-        ImGui::Checkbox("Demo Window", &showDemoWindow_);      // Edit bools storing our window open/close state
-        ImGui::Checkbox("Another Window", &showAnotherWindow_);
-
-        ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-        ImGui::ColorEdit3("clear color", (float*)&clearColor_); // Edit 3 floats representing a color
-
-        if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-            counter++;
-        ImGui::SameLine();
-        ImGui::Text("counter = %d", counter);
-
+        ImGui::SliderInt("rotation", &rotation_, 0, 360);            // Edit 1 float using a slider from 0.0f to 1.0f
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::End();
     }
