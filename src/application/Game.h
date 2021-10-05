@@ -11,6 +11,7 @@
 #include "engine/graphics/shader/ShaderProgram.h"
 #include "engine/graphics/texture/Texture.h"
 #include "imgui.h"
+#include "graphics/camera/Camera.h"
 
 class Game : public IGame
 {
@@ -21,13 +22,9 @@ private:
     ShaderProgram shaderProgram_;
     Texture texture_;
 
-    bool showDemoWindow_;
-    bool showAnotherWindow_;
-    ImVec4 clearColor_;
+    Camera camera_;
 
-    float red_;
-    float redDirection_;
-    int rotation_;
+    float modelRotate_;
 
 public:
     Game();

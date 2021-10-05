@@ -11,10 +11,14 @@
 
 #include "imgui.h"
 
-Game::Game() : red_(0.01f), redDirection_(1.0f), rotation_(0) {}
+Game::Game() : modelRotate_(0.0f) {}
 
 void Game::init()
 {
+    camera_.setXPos(0.0f);
+    camera_.setYPos(-0.5f);
+    camera_.setZPos(-4.0f);
+
     float positions[] = {
             // position             // color
             -0.5f, 0.0f,  0.5f,     0.5f, 0.0f,  0.0f,
@@ -46,10 +50,10 @@ void Game::init()
 
     glm::mat4 modelMatrix = glm::mat4(1.0f);
     glm::mat4 viewMatrix = glm::mat4(1.0f);
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(camera_.getXPos(), camera_.getYPos(), camera_.getZPos()));
     glm::mat4 projectionMatrix = glm::mat4(1.0f);
 
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(60.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, -0.5f, -2.0f));
+     // TODO get screen size
     projectionMatrix = glm::perspective(glm::radians(45.0f), (float)(640/480), 0.1f, 100.0f);
 
     shaderProgram_.init("../res/shaders/Basic.vert", "../res/shaders/Basic.frag");
@@ -62,11 +66,6 @@ void Game::init()
     shaderProgram_.setUniformMat4f("u_modelMatrix", modelMatrix);
     shaderProgram_.setUniformMat4f("u_viewMatrix", viewMatrix);
     shaderProgram_.setUniformMat4f("u_projectionMatrix", projectionMatrix);
-
-    // imgui test
-    showDemoWindow_ = true;
-    showAnotherWindow_ = false;
-    clearColor_ = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 }
 
 void Game::update()
@@ -74,16 +73,49 @@ void Game::update()
     Renderer::draw(vertexArray_, indexBuffer_, shaderProgram_);
 
     glm::mat4 modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::rotate(modelMatrix, glm::radians((float)rotation_), glm::vec3(0.0f, 1.0f, 0.0f));
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(modelRotate_), glm::vec3(0.0f, 1.0f, 0.0f));
     shaderProgram_.setUniformMat4f("u_modelMatrix", modelMatrix);
+
+    glm::mat4 viewMatrix = glm::mat4(1.0f);
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(camera_.getXPos(), camera_.getYPos(), camera_.getZPos()));
+
+    // TODO rotate camera
+//    viewMatrix = glm::rotate(viewMatrix, glm::radians(camera_.getRotateX()), glm::vec3(0.0f, 1.0f, 0.0f));
+//    viewMatrix = glm::rotate(viewMatrix, glm::radians(camera_.getRotateY()), glm::vec3(1.0f, 0.0f, 0.0f));
+//    viewMatrix = glm::rotate(viewMatrix, glm::radians(camera_.getRotateZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+    shaderProgram_.setUniformMat4f("u_viewMatrix", viewMatrix);
+
+    modelRotate_ += 0.5f;
 
     // imgui tests
     {
-        static float f = 0.0f;
-        static int counter = 0;
-
         ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-        ImGui::SliderInt("rotation", &rotation_, 0, 360);            // Edit 1 float using a slider from 0.0f to 1.0f
+        if (ImGui::Button("move camera left"))
+            camera_.moveX(1.0f);
+        if (ImGui::Button("move camera right"))
+            camera_.moveX(-1.0f);
+        if (ImGui::Button("move camera up"))
+            camera_.moveY(-1.0f);
+        if (ImGui::Button("move camera down"))
+            camera_.moveY(1.0f);
+        if (ImGui::Button("move camera forwards"))
+            camera_.moveZ(1.0f);
+        if (ImGui::Button("move camera backwards"))
+            camera_.moveZ(-1.0f);
+
+        if (ImGui::Button("look up"))
+            camera_.rotateX(1.0f);
+        if (ImGui::Button("look down"))
+            camera_.rotateX(1.0f);
+        if (ImGui::Button("look left"))
+            camera_.rotateY(1.0f);
+        if (ImGui::Button("look right"))
+            camera_.rotateY(1.0f);
+        if (ImGui::Button("rotate left"))
+            camera_.rotateZ(1.0f);
+        if (ImGui::Button("rotate right"))
+            camera_.rotateZ(1.0f);
+
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::End();
     }
