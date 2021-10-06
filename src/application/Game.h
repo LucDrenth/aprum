@@ -12,6 +12,7 @@
 #include "engine/graphics/texture/Texture.h"
 #include "imgui.h"
 #include "graphics/camera/Camera.h"
+#include "graphics/window/Window.h"
 
 class Game : public IGame
 {
@@ -21,6 +22,7 @@ private:
     IndexBuffer indexBuffer_;
     ShaderProgram shaderProgram_;
     Texture texture_;
+    Window* window_;
 
     Camera camera_;
 
@@ -31,4 +33,5 @@ public:
     void init() override;
     void update() override;
     void destroy() override;
+    void setWindow(Window* window) override;
 };

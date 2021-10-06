@@ -4,38 +4,49 @@
 
 #pragma once
 
+#include "glm/glm.hpp"
+#include "graphics/window/Window.h"
+#include "graphics/shader/ShaderProgram.h"
+#include "GLFW/glfw3.h"
 
 class Camera
 {
 private:
-    float xPos_;
-    float yPos_;
-    float zPos_;
-    float rotateX_;
-    float rotateY_;
-    float rotateZ_;
+    glm::vec3 position_;
+    glm::vec3 orientation_;
+    glm::vec3 upDirection_;
+
+    int width_;
+    int height_;
+
+    float speed_;
+    float sensitivity_;
+
+    bool mouseCaptured_;
+    float mouseCapturedX_;
+    float mouseCapturedY_;
 
 public:
     Camera();
 
-    void moveX(float x);
-    void moveY(float y);
-    void moveZ(float z);
+    void pollInput(Window& window);
+    void pollKeyboardInput(Window& window);
+    void pollMouseInput(Window& window);
 
-    void rotateX(float x);
-    void rotateY(float y);
-    void rotateZ(float z);
+    void uploadUniform(ShaderProgram& shaderProgram, const std::string& uniform);
 
-    float getXPos() const;
-    void setXPos(float xPos);
-    float getYPos() const;
-    void setYPos(float yPos);
-    float getZPos() const;
-    void setZPos(float zPos);
-    float getRotateX() const;
-    void setRotateX(float rotateX);
-    float getRotateY() const;
-    void setRotateY(float rotateY);
-    float getRotateZ() const;
-    void setRotateZ(float rotateZ);
+    const glm::vec3 &getPosition() const;
+    void setPosition(const glm::vec3 &position);
+    const glm::vec3 &getOrientation() const;
+    void setOrientation(const glm::vec3 &orientation);
+    const glm::vec3 &getUpDirection() const;
+    void setUpDirection(const glm::vec3 &upDirection);
+    int getWidth() const;
+    void setWidth(int width);
+    int getHeight() const;
+    void setHeight(int height);
+    float getSpeed() const;
+    void setSpeed(float speed);
+    float getSensitivity() const;
+    void setSensitivity(float sensitivity);
 };

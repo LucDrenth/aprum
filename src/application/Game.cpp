@@ -6,18 +6,20 @@
 #include "graphics/renderer/Renderer.h"
 #include "graphics/renderer/VertexArray.h"
 #include "logger/GLErrorHandler.h"
+#include "graphics/window/Window.h"
 
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "imgui.h"
 
+
 Game::Game() : modelRotate_(0.0f) {}
 
 void Game::init()
 {
-    camera_.setXPos(0.0f);
-    camera_.setYPos(-0.5f);
-    camera_.setZPos(-4.0f);
+    camera_.setWidth(640);
+    camera_.setHeight(480);
+    camera_.setPosition(glm::vec3(0.0f, 0.0f, 2.0f));
 
     float positions[] = {
             // position             // color
@@ -48,14 +50,6 @@ void Game::init()
     vertexArray_.addBuffer(vertexBuffer_, layout);
     indexBuffer_.init(indices, sizeof(indices) / sizeof(unsigned int));
 
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
-    glm::mat4 viewMatrix = glm::mat4(1.0f);
-    viewMatrix = glm::translate(viewMatrix, glm::vec3(camera_.getXPos(), camera_.getYPos(), camera_.getZPos()));
-    glm::mat4 projectionMatrix = glm::mat4(1.0f);
-
-     // TODO get screen size
-    projectionMatrix = glm::perspective(glm::radians(45.0f), (float)(640/480), 0.1f, 100.0f);
-
     shaderProgram_.init("../res/shaders/Basic.vert", "../res/shaders/Basic.frag");
     shaderProgram_.use();
 
@@ -63,9 +57,9 @@ void Game::init()
     texture_.bind(0);
 
     shaderProgram_.setUniform1i("u_TextureSlot", 0);
+
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
     shaderProgram_.setUniformMat4f("u_modelMatrix", modelMatrix);
-    shaderProgram_.setUniformMat4f("u_viewMatrix", viewMatrix);
-    shaderProgram_.setUniformMat4f("u_projectionMatrix", projectionMatrix);
 }
 
 void Game::update()
@@ -75,47 +69,18 @@ void Game::update()
     glm::mat4 modelMatrix = glm::mat4(1.0f);
     modelMatrix = glm::rotate(modelMatrix, glm::radians(modelRotate_), glm::vec3(0.0f, 1.0f, 0.0f));
     shaderProgram_.setUniformMat4f("u_modelMatrix", modelMatrix);
-
-    glm::mat4 viewMatrix = glm::mat4(1.0f);
-    viewMatrix = glm::translate(viewMatrix, glm::vec3(camera_.getXPos(), camera_.getYPos(), camera_.getZPos()));
-
-    // TODO rotate camera
-//    viewMatrix = glm::rotate(viewMatrix, glm::radians(camera_.getRotateX()), glm::vec3(0.0f, 1.0f, 0.0f));
-//    viewMatrix = glm::rotate(viewMatrix, glm::radians(camera_.getRotateY()), glm::vec3(1.0f, 0.0f, 0.0f));
-//    viewMatrix = glm::rotate(viewMatrix, glm::radians(camera_.getRotateZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-    shaderProgram_.setUniformMat4f("u_viewMatrix", viewMatrix);
-
     modelRotate_ += 0.5f;
 
-    // imgui tests
+    camera_.uploadUniform(shaderProgram_, "u_camera");
+    camera_.pollInput(*window_);
+
+    // imgui
     {
         ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
         if (ImGui::Button("move camera left"))
-            camera_.moveX(1.0f);
-        if (ImGui::Button("move camera right"))
-            camera_.moveX(-1.0f);
-        if (ImGui::Button("move camera up"))
-            camera_.moveY(-1.0f);
-        if (ImGui::Button("move camera down"))
-            camera_.moveY(1.0f);
-        if (ImGui::Button("move camera forwards"))
-            camera_.moveZ(1.0f);
-        if (ImGui::Button("move camera backwards"))
-            camera_.moveZ(-1.0f);
-
-        if (ImGui::Button("look up"))
-            camera_.rotateX(1.0f);
-        if (ImGui::Button("look down"))
-            camera_.rotateX(1.0f);
-        if (ImGui::Button("look left"))
-            camera_.rotateY(1.0f);
-        if (ImGui::Button("look right"))
-            camera_.rotateY(1.0f);
-        if (ImGui::Button("rotate left"))
-            camera_.rotateZ(1.0f);
-        if (ImGui::Button("rotate right"))
-            camera_.rotateZ(1.0f);
-
+        {
+//            camera_.moveX(1.0f);
+        }
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::End();
     }
@@ -123,4 +88,9 @@ void Game::update()
 
 void Game::destroy()
 {
+}
+
+void Game::setWindow(Window* window)
+{
+    window_ = window;
 }

@@ -14,7 +14,7 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-Window::Window()
+Window::Window() : width_(640), height_(480)
 {
 }
 
@@ -31,6 +31,7 @@ void Window::run(IGame& game)
     }
 
     game.init();
+    game.setWindow(this);
 
     while (!glfwWindowShouldClose(window_))
     {
@@ -84,7 +85,7 @@ int Window::init()
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     #endif
 
-    window_ = glfwCreateWindow(640, 480, "Aprum engine", nullptr, nullptr);
+    window_ = glfwCreateWindow(width_, height_, "Aprum engine", nullptr, nullptr);
     if (!window_)
     {
         glfwTerminate();
@@ -115,4 +116,29 @@ void Window::initImgui()
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window_, true);
     ImGui_ImplOpenGL3_Init((char *)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
+}
+
+int Window::getWidth() const
+{
+    return width_;
+}
+
+void Window::setWidth(int width)
+{
+    width_ = width;
+}
+
+int Window::getHeight() const
+{
+    return height_;
+}
+
+void Window::setHeight(int height)
+{
+    height_ = height;
+}
+
+GLFWwindow *Window::glfw()
+{
+    return window_;
 }
