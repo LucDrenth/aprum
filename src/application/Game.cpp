@@ -8,6 +8,7 @@
 #include "logger/GLErrorHandler.h"
 #include "graphics/window/Window.h"
 #include "input/Input.h"
+#include "utils/MathUtils.h"
 
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -68,9 +69,15 @@ void Game::update()
     Renderer::draw(vertexArray_, indexBuffer_, shaderProgram_);
 
     glm::mat4 modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(modelRotate_), glm::vec3(0.0f, 1.0f, 0.0f));
+
+    // rotate around a point
+    modelMatrix = rotateAroundAxisZ(modelMatrix, modelRotate_, 1.0f, 1.0f);
+
+    // rotate around axis
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(modelRotate_ * 40), glm::vec3(0.0f, 1.0f, 0.0f));
+
     shaderProgram_.setUniformMat4f("u_modelMatrix", modelMatrix);
-    modelRotate_ += 0.5f;
+    modelRotate_ += 0.02f;
 
     camera_.uploadUniform(shaderProgram_, "u_camera");
     camera_.pollInput(*window_);
