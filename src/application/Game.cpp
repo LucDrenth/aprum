@@ -7,6 +7,7 @@
 #include "graphics/renderer/VertexArray.h"
 #include "logger/GLErrorHandler.h"
 #include "graphics/window/Window.h"
+#include "input/Input.h"
 
 #include "glm/gtc/matrix_transform.hpp"
 

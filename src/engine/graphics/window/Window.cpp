@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include "engine/logger/GLErrorHandler.h"
 #include "Window.h"
+#include "input/Input.h"
 
 #include <GLFW/glfw3.h>
 
@@ -49,6 +50,9 @@ void Window::run(IGame& game)
         // draw imgui frame
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        // reset input
+        Input::get()->endFrame();
 
         // swap buffers
         GLCall(glfwSwapBuffers(window_));
@@ -103,6 +107,7 @@ int Window::init()
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     initImgui();
+    registerInputCallbacks(window_);
 
     GLCall(glEnable(GL_DEPTH_TEST));
 
