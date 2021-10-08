@@ -41,9 +41,6 @@ void Game::init()
             3, 0, 4
     };
 
-    GLCall(glEnable(GL_BLEND));
-    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-
     vertexBuffer_.init(positions, sizeof(positions));
     VertexBufferLayout layout;
     layout.push(GL_FLOAT, 3); // position
