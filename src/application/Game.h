@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include "entity/Mesh.h"
-#include "engine/graphics/renderer/VertexBuffer.h"
-#include "engine/graphics/renderer/IndexBuffer.h"
-#include "engine/graphics/renderer/VertexArray.h"
-#include "engine/IGame.h"
-#include "engine/graphics/shader/ShaderProgram.h"
-#include "engine/graphics/texture/Texture.h"
+#include "entity/mesh/Mesh.h"
+#include "entity/mesh/VertexBuffer.h"
+#include "entity/mesh/IndexBuffer.h"
+#include "entity/mesh/VertexArray.h"
+#include "IGame.h"
+#include "graphics/shader/ShaderProgram.h"
+#include "graphics/texture/Texture.h"
 #include "imgui.h"
 #include "graphics/camera/Camera.h"
 #include "graphics/window/Window.h"
@@ -20,9 +20,6 @@ class Game : public IGame
 private:
     Mesh pyramid_;
 
-    VertexArray vertexArray_;
-    VertexBuffer vertexBuffer_;
-    IndexBuffer indexBuffer_;
     ShaderProgram shaderProgram_;
     Texture texture_;
     Window* window_;

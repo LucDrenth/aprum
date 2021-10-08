@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "graphics/renderer/VertexBuffer.h"
-#include "graphics/renderer/VertexArray.h"
-#include "graphics/renderer/IndexBuffer.h"
+#include "VertexBuffer.h"
+#include "VertexArray.h"
+#include "IndexBuffer.h"
 
 #include "glm/vec3.hpp"
 

@@ -4,13 +4,8 @@
 
 #include "Game.h"
 #include "graphics/renderer/Renderer.h"
-#include "graphics/renderer/VertexArray.h"
-#include "logger/GLErrorHandler.h"
+#include "entity/mesh/VertexArray.h"
 #include "graphics/window/Window.h"
-#include "input/Input.h"
-#include "utils/MathUtils.h"
-
-#include "glm/gtc/matrix_transform.hpp"
 
 #include "imgui.h"
 

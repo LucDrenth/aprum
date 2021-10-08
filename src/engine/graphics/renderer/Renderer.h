@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "engine/graphics/shader/ShaderProgram.h"
-#include "VertexArray.h"
-#include "IndexBuffer.h"
-#include <entity/Mesh.h>
+#include "graphics/shader/ShaderProgram.h"
+#include "entity/mesh/VertexArray.h"
+#include "entity/mesh/IndexBuffer.h"
+#include "entity/mesh/Mesh.h"
 
 #include <GL/Glew.h>
 
