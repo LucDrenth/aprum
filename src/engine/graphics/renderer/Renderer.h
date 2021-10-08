@@ -7,6 +7,7 @@
 #include "engine/graphics/shader/ShaderProgram.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
+#include <entity/Mesh.h>
 
 #include <GL/Glew.h>
 
@@ -14,4 +15,5 @@ class Renderer
 {
 public:
     static void draw(const VertexArray& vertexArray, const IndexBuffer& indexBuffer, const ShaderProgram& shaderProgram);
+    static void draw(const Mesh& mesh, ShaderProgram& shaderProgram);
 };

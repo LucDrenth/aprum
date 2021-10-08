@@ -15,7 +15,7 @@
 #include "imgui.h"
 
 
-Game::Game() : modelRotate_(0.0f) {}
+Game::Game(){}
 
 void Game::init()
 {
@@ -41,13 +41,11 @@ void Game::init()
             3, 0, 4
     };
 
-    vertexBuffer_.init(positions, sizeof(positions));
     VertexBufferLayout layout;
     layout.push(GL_FLOAT, 3); // position
     layout.push(GL_FLOAT, 3); // color
-    vertexArray_.init();
-    vertexArray_.addBuffer(vertexBuffer_, layout);
-    indexBuffer_.init(indices, sizeof(indices) / sizeof(unsigned int));
+
+    pyramid_.init(positions, sizeof(positions), layout, indices, sizeof(indices) / sizeof(unsigned int));
 
     shaderProgram_.init("../res/shaders/Basic.vert", "../res/shaders/Basic.frag");
     shaderProgram_.use();
@@ -56,37 +54,20 @@ void Game::init()
     texture_.bind(0);
 
     shaderProgram_.setUniform1i("u_TextureSlot", 0);
-
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
-    shaderProgram_.setUniformMat4f("u_modelMatrix", modelMatrix);
 }
 
 void Game::update()
 {
-    Renderer::draw(vertexArray_, indexBuffer_, shaderProgram_);
-
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
-
-    // rotate around a point
-//    modelMatrix = rotateAroundAxisZ(modelMatrix, modelRotate_, 1.0f, 1.0f);
-
-    // rotate around axis
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(modelRotate_ * 40), glm::vec3(0.0f, 1.0f, 0.0f));
-
-    shaderProgram_.setUniformMat4f("u_modelMatrix", modelMatrix);
-    modelRotate_ += 0.02f;
+    Renderer::draw(pyramid_, shaderProgram_);
 
     camera_.uploadUniform(shaderProgram_, "u_camera");
     camera_.pollInput(*window_);
 
-    // imgui
     {
-        ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-        if (ImGui::Button("move camera left"))
-        {
-//            camera_.moveX(1.0f);
-        }
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::Begin("Hello, world!");
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
+                    1000.0f / ImGui::GetIO().Framerate,
+                    ImGui::GetIO().Framerate);
         ImGui::End();
     }
 }

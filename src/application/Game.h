@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "entity/Mesh.h"
 #include "engine/graphics/renderer/VertexBuffer.h"
 #include "engine/graphics/renderer/IndexBuffer.h"
 #include "engine/graphics/renderer/VertexArray.h"
@@ -17,6 +18,8 @@
 class Game : public IGame
 {
 private:
+    Mesh pyramid_;
+
     VertexArray vertexArray_;
     VertexBuffer vertexBuffer_;
     IndexBuffer indexBuffer_;
@@ -25,8 +28,6 @@ private:
     Window* window_;
 
     Camera camera_;
-
-    float modelRotate_;
 
 public:
     Game();
