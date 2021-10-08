@@ -22,10 +22,6 @@ private:
     float speed_;
     float sensitivity_;
 
-    bool mouseCaptured_;
-    float mouseCapturedX_;
-    float mouseCapturedY_;
-
 public:
     Camera();
 

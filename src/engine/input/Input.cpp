@@ -67,7 +67,7 @@ void onMouseMove(GLFWwindow* window, double xpos, double ypos)
 {
     Input* input = Input::get();
     input->setMouseMovedX(xpos - input->getMouseX());
-    input->setMouseMovedX(ypos - input->getMouseY());
+    input->setMouseMovedY(ypos - input->getMouseY());
     input->setMouseX(xpos);
     input->setMouseY(ypos);
 }

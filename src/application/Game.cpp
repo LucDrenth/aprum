@@ -68,7 +68,7 @@ void Game::update()
     glm::mat4 modelMatrix = glm::mat4(1.0f);
 
     // rotate around a point
-    modelMatrix = rotateAroundAxisZ(modelMatrix, modelRotate_, 1.0f, 1.0f);
+//    modelMatrix = rotateAroundAxisZ(modelMatrix, modelRotate_, 1.0f, 1.0f);
 
     // rotate around axis
     modelMatrix = glm::rotate(modelMatrix, glm::radians(modelRotate_ * 40), glm::vec3(0.0f, 1.0f, 0.0f));

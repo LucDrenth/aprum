@@ -6,13 +6,14 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/vector_angle.hpp>
+#include "input/Input.h"
 
 Camera::Camera() :
         position_(),
         orientation_(glm::vec3(0.0f, 0.0f, -1.0f)),
         upDirection_(glm::vec3(0.0f, 1.0f, 0.0f)),
         speed_(0.1f),
-        sensitivity_(100.0f),
+        sensitivity_(1.0f),
         width_(100),
         height_(100)
 {
@@ -53,87 +54,32 @@ void Camera::pollKeyboardInput(Window &window)
     }
 }
 
-// TODO finish this
 void Camera::pollMouseInput(Window &window)
 {
-    if (glfwGetMouseButton(window.glfw(), GLFW_MOUSE_BUTTON_2) == GLFW_PRESS)
+    int mouseButtonForCapturing = GLFW_MOUSE_BUTTON_2;
+
+    if (glfwGetMouseButton(window.glfw(), mouseButtonForCapturing) == GLFW_PRESS)
     {
-        // get cursor position
-        double mouseX;
-        double mouseY;
-        glfwGetCursorPos(window.glfw(), &mouseX, &mouseY);
+        glfwSetInputMode(window.glfw(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-        // capture mouse position
-        if (!mouseCaptured_)
+        // get the rotation
+        float rotationX = Input::get()->getMouseMovedX() * sensitivity_;
+        float rotationY = Input::get()->getMouseMovedY() * sensitivity_;
+
+        if (rotationY != 0.0f)
         {
-            mouseCaptured_ = true;
-            mouseCapturedX_ = (float)mouseX;
-            mouseCapturedY_ = (float)mouseY;
-
-            std::cout << "capture at x: " << mouseCapturedX_ << ", y: " << mouseCapturedY_ << std::endl;
-            return;
+            orientation_ = glm::rotate(orientation_, glm::radians(-rotationY), glm::normalize(glm::cross(orientation_, upDirection_)));;
         }
 
-        float mouseMovedX = (float)mouseX - mouseCapturedX_;
-        float mouseMovedY = (float)mouseY - mouseCapturedY_;
-        std::cout << mouseMovedX << " / " << mouseMovedY << std::endl;
-
-        glfwSetCursorPos(window.glfw(), mouseCapturedX_, mouseCapturedY_);
-
+        if (rotationX != 0.0f)
+        {
+            orientation_ = glm::rotate(orientation_, glm::radians(-rotationX), upDirection_);
+        }
     }
-    if (glfwGetMouseButton(window.glfw(), GLFW_MOUSE_BUTTON_2) == GLFW_RELEASE)
+    else if (glfwGetMouseButton(window.glfw(), mouseButtonForCapturing) == GLFW_RELEASE)
     {
-        mouseCaptured_ = false;
+        glfwSetInputMode(window.glfw(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
-
-//    // Handles mouse inputs
-//    if (glfwGetMouseButton(window.glfw(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-//    {
-//        // Hides mouse cursor
-//        glfwSetInputMode(window.glfw(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-//
-//        // Prevents camera from jumping on the first click
-//        if (firstClick_)
-//        {
-//            glfwSetCursorPos(window.glfw(), (window.getWidth() / 2), (window.getHeight() / 2));
-//            firstClick_ = false;
-//        }
-//
-//        // Stores the coordinates of the cursor
-//        double mouseX;
-//        double mouseY;
-//        // Fetches the coordinates of the cursor
-//        glfwGetCursorPos(window.glfw(), &mouseX, &mouseY);
-//
-//        // Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
-//        // and then "transforms" them into degrees
-//        float rotX = sensitivity_ * (float)(mouseY - (window.getHeight() / 2)) / window.getHeight();
-//        float rotY = sensitivity_ * (float)(mouseX - (window.getWidth() / 2)) / window.getWidth();
-//
-//        std::cout << mouseX << " / " << mouseY << std::endl;
-//
-//        // Calculates upcoming vertical change in the Orientation
-//        glm::vec3 newOrientation = glm::rotate(orientation_, glm::radians(-rotX), glm::normalize(glm::cross(orientation_, upDirection_)));
-//
-//        // Decides whether or not the next vertical Orientation is legal or not
-//        if (abs(glm::angle(newOrientation, upDirection_) - glm::radians(90.0f)) <= glm::radians(85.0f))
-//        {
-//            orientation_ = newOrientation;
-//        }
-//
-//        // Rotates the Orientation left and right
-//        orientation_ = glm::rotate(orientation_, glm::radians(-rotY), upDirection_);
-//
-//        // Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
-//        glfwSetCursorPos(window.glfw(), (window.getWidth() / 2), (window.getHeight() / 2));
-//    }
-//    else if (glfwGetMouseButton(window.glfw(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
-//    {
-//        // Unhides cursor since camera is not looking around anymore
-//        glfwSetInputMode(window.glfw(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-//        // Makes sure the next time the camera looks around it doesn't jump
-//        firstClick_ = true;
-//    }
 }
 
 void Camera::uploadUniform(ShaderProgram& shaderProgram, const std::string& uniform)
