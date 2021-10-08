@@ -15,5 +15,5 @@ class Renderer
 {
 public:
     static void draw(const VertexArray& vertexArray, const IndexBuffer& indexBuffer, const ShaderProgram& shaderProgram);
-    static void draw(const Mesh& mesh, ShaderProgram& shaderProgram);
+    static void draw(const Mesh& mesh, ShaderProgram& shaderProgram, glm::vec3& position, glm::vec3& rotation);
 };

@@ -20,11 +20,11 @@ void Game::init()
 
     float positions[] = {
             // position             // color
-            -0.5f, 0.0f,  0.5f,     0.5f, 0.0f,  0.0f,
-            -0.5f, 0.0f, -0.5f,     0.0f,  0.5f, 0.0f,
+            -0.5f, 0.0f,  0.5f,     0.5f, 0.0f, 0.0f,
+            -0.5f, 0.0f, -0.5f,     0.0f, 0.5f, 0.0f,
              0.5f, 0.0f, -0.5f,     0.0f, 0.0f, 0.5f,
              0.5f, 0.0f,  0.5f,     0.5f, 0.5f, 0.0f,
-             0.0f, 0.8f,  0.0f,     0.0f, 0.5f,  0.5f,
+             0.0f, 0.8f,  0.0f,     0.0f, 0.5f, 0.5f,
     };
 
     unsigned int indices[] = {
@@ -42,6 +42,18 @@ void Game::init()
 
     pyramid_.init(positions, sizeof(positions), layout, indices, sizeof(indices) / sizeof(unsigned int));
 
+    entity1_.init(pyramid_);
+    entity1_.velocity_.x = 0.01f;
+    entity1_.rotationVelocity_.x = 1.0f;
+
+    entity2_.init(pyramid_);
+    entity2_.velocity_.y = 0.01f;
+    entity2_.rotationVelocity_.y = 1.0f;
+
+    entity3_.init(pyramid_);
+    entity3_.velocity_.z = 0.01f;
+    entity3_.rotationVelocity_.z = 1.0f;
+
     shaderProgram_.init("../res/shaders/Basic.vert", "../res/shaders/Basic.frag");
     shaderProgram_.use();
 
@@ -53,7 +65,13 @@ void Game::init()
 
 void Game::update()
 {
-    Renderer::draw(pyramid_, shaderProgram_);
+    entity1_.draw(shaderProgram_);
+    entity2_.draw(shaderProgram_);
+    entity3_.draw(shaderProgram_);
+
+    entity1_.update();
+    entity2_.update();
+    entity3_.update();
 
     camera_.uploadUniform(shaderProgram_, "u_camera");
     camera_.pollInput(*window_);

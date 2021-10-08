@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "entity/Entity.h"
 #include "entity/mesh/Mesh.h"
 #include "entity/mesh/VertexBuffer.h"
 #include "entity/mesh/IndexBuffer.h"
@@ -19,6 +20,9 @@ class Game : public IGame
 {
 private:
     Mesh pyramid_;
+    Entity entity1_;
+    Entity entity2_;
+    Entity entity3_;
 
     ShaderProgram shaderProgram_;
     Texture texture_;
