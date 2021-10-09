@@ -40,3 +40,17 @@ void Rubikscube::draw(ShaderProgram& shader)
         }
     }
 }
+
+void Rubikscube::update()
+{
+    for (int z = 0; z <= 2; z++)
+    {
+        for (int y = 0; y <= 2; y++)
+        {
+            for (int x = 0; x <= 2; x++)
+            {
+                cubes_[x][y][z].update();
+            }
+        }
+    }
+}

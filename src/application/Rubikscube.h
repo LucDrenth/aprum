@@ -7,6 +7,22 @@
 
 #include "entity/Entity.h"
 
+enum Turn
+{
+    L,
+    L_PRIME,
+    R,
+    R_PRIME,
+    F,
+    F_PRIME,
+    B_,
+    B_PRIME,
+    U,
+    U_PRIME,
+    D,
+    D_PRIME,
+};
+
 class Rubikscube
 {
 private:
@@ -15,4 +31,5 @@ private:
 public:
     void init();
     void draw(ShaderProgram& shader);
+    void update();
 };

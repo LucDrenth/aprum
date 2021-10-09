@@ -31,6 +31,7 @@ void Game::init()
 void Game::update()
 {
     rubikscube_.draw(shaderProgram_);
+    rubikscube_.update();
 
     camera_.uploadUniform(shaderProgram_, "u_camera");
     camera_.pollInput(*window_);
