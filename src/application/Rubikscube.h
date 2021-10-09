@@ -10,8 +10,9 @@
 class Rubikscube
 {
 private:
-    Entity cubes[3][3][3];
+    Entity cubes_[3][3][3];
 
 public:
     void init();
+    void draw(ShaderProgram& shader);
 };

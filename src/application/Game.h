@@ -15,14 +15,12 @@
 #include "imgui.h"
 #include "graphics/camera/Camera.h"
 #include "graphics/window/Window.h"
+#include "Rubikscube.h"
 
 class Game : public IGame
 {
 private:
-    Mesh pyramid_;
-    Entity entity1_;
-    Entity entity2_;
-    Entity entity3_;
+    Rubikscube rubikscube_;
 
     ShaderProgram shaderProgram_;
     Texture texture_;
