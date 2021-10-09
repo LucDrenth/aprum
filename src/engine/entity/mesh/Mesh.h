@@ -12,6 +12,11 @@
 
 #include <vector>
 
+enum Shape {
+    PYRAMID,
+    CUBE,
+};
+
 class Mesh
 {
 private:
@@ -21,6 +26,7 @@ private:
 
 public:
     void init(const void* vertices, unsigned int verticesSize, VertexBufferLayout& vertexLayout, const unsigned int *indices, unsigned int indicesCount);
+    void init(Shape shape);
 
     const VertexBuffer &getVertexBuffer() const;
     const VertexArray &getVertexArray() const;

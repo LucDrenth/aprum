@@ -18,29 +18,11 @@ void Game::init()
     camera_.setHeight(480);
     camera_.setPosition(glm::vec3(0.0f, 0.0f, 2.0f));
 
-    float positions[] = {
-            // position             // color
-            -0.5f, 0.0f,  0.5f,     0.5f, 0.0f, 0.0f,
-            -0.5f, 0.0f, -0.5f,     0.0f, 0.5f, 0.0f,
-             0.5f, 0.0f, -0.5f,     0.0f, 0.0f, 0.5f,
-             0.5f, 0.0f,  0.5f,     0.5f, 0.5f, 0.0f,
-             0.0f, 0.8f,  0.0f,     0.0f, 0.5f, 0.5f,
-    };
-
-    unsigned int indices[] = {
-            0, 1, 2,
-            0, 2, 3,
-            0, 1, 4,
-            1, 2, 4,
-            2, 3, 4,
-            3, 0, 4
-    };
-
     VertexBufferLayout layout;
     layout.push(GL_FLOAT, 3); // position
     layout.push(GL_FLOAT, 3); // color
 
-    pyramid_.init(positions, sizeof(positions), layout, indices, sizeof(indices) / sizeof(unsigned int));
+    pyramid_.init(Shape::CUBE);
 
     entity1_.init(pyramid_);
     entity1_.velocity_.x = 0.01f;
