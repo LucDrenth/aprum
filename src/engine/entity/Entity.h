@@ -20,6 +20,11 @@ public:
     glm::vec3 velocity_;
     glm::vec3 rotationVelocity_;
 
+    bool rotateAroundPoint_;
+    glm::vec3 pointToRotateAround_;
+    glm::vec3 rotationAroundPoint_;
+    glm::vec3 rotationAroundPointVelocity_;
+
 public:
     Entity();
 

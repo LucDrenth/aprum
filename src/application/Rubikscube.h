@@ -25,7 +25,7 @@ enum Turn
 
 class Rubikscube
 {
-private:
+public:
     Entity cubes_[3][3][3];
 
 public:

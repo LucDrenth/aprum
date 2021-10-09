@@ -22,6 +22,13 @@ void Rubikscube::init()
                         (float)x * spaceBetweenCubes,
                         (float)y * spaceBetweenCubes,
                         (float)z * spaceBetweenCubes);
+
+                if (x == 0)
+                {
+                    cubes_[x][y][z].rotateAroundPoint_ = true;
+                    cubes_[x][y][z].pointToRotateAround_ = glm::vec3(0.5f, 0.5f, 0.5f);
+                    cubes_[x][y][z].rotationAroundPointVelocity_ = glm::vec3(0.0f, 0.03f, 0.0f);
+                }
             }
         }
     }
