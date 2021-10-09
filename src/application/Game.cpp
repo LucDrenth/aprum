@@ -22,7 +22,7 @@ void Game::init()
     layout.push(GL_FLOAT, 3); // position
     layout.push(GL_FLOAT, 3); // color
 
-    pyramid_.init(Shape::CUBE);
+    pyramid_.init(Shape::PYRAMID);
 
     entity1_.init(pyramid_);
     entity1_.velocity_.x = 0.01f;
