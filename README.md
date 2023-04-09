@@ -1,2 +1,2 @@
 # aprum
-My game engine written in c++
+A program to explore graphics programming with C++ and OpenGL
